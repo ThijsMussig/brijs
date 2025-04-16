@@ -1,26 +1,31 @@
 workflows:
   ios-release:
-    name: iOS Release Build
+    name: iOS Release with Signing
     max_build_duration: 60
     environment:
       flutter: stable
       xcode: latest
+      vars:
+        APP_ID: "com.example.todoeyFlutter" # Change to your real bundle ID
     certificates:
-      - certificate_url: ENCRYPTED_P12_URL    # Replace with your encrypted P12 URL
-        certificate_password: ENCRYPTED_PASSWORD    # Replace with your encrypted password (if needed)
-        provisioning_profile_url: ENCRYPTED_MOBILEPROVISION_URL   # Replace with your encrypted provisioning profile URL
+      - certificate_url: ENCRYPTED_P12_URL
+        certificate_password: ENCRYPTED_PASSWORD
+        provisioning_profile_url: ENCRYPTED_MOBILEPROVISION_URL
+
     scripts:
       - name: Install Flutter dependencies
         script: |
           flutter pub get
+
       - name: Install CocoaPods
         script: |
           cd ios
           pod install
           cd ..
-      - name: Build iOS app
+
+      - name: Build iOS
         script: |
           flutter build ios --release
+
     artifacts:
       - build/ios/ipa
-
