@@ -1,6 +1,6 @@
 workflows:
-  ios-release:
-    name: iOS Release with Signing
+  ios-release-no-sign:
+    name: iOS Release (No Code Signing)
     max_build_duration: 60
     environment:
       flutter: stable
@@ -18,9 +18,10 @@ workflows:
           pod install
           cd ..
 
-      - name: Build iOS Release
+      - name: Build iOS Release (No Code Signing)
         script: |
-          flutter build ios --release
+          flutter build ios --release --no-codesign
 
     artifacts:
+      - build/ios/iphoneos/Runner.app
       - build/ios/ipa/*.ipa
