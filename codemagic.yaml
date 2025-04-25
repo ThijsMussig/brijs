@@ -6,10 +6,14 @@ workflows:
       flutter: stable
       xcode: latest
       vars:
-        APP_ID: "com.example.todoeyFlutter" # Change to your real bundle ID
+        APP_ID: "com.example.todoeyFlutter" # Replace with your actual bundle ID
     certificates:
-     
-
+      # Upload your signing certificates and provisioning profiles in Codemagic UI,
+      # then reference their environment variable names here.
+      development:
+        certificate_url: EncryptedCertificateUrl
+        certificate_password: EncryptedPassword
+        provisioning_profile_url: EncryptedProvisioningProfileUrl
     scripts:
       - name: Install Flutter dependencies
         script: |
@@ -21,9 +25,16 @@ workflows:
           pod install
           cd ..
 
-      - name: Build iOS
+      - name: Build iOS Release
         script: |
-          flutter build ios --release
+          flutter build ios --release --no-codesign
+
+      - name: Export .ipa
+        script: |
+          xcodebuild -exportArchive \
+            -archivePath build/ios/archive/Runner.xcarchive \
+            -exportOptionsPlist ios/ExportOptions.plist \
+            -exportPath build/ios/ipa
 
     artifacts:
-      - build/ios/ipa
+      - build/ios/ipa/*.ipa
