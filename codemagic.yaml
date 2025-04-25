@@ -8,9 +8,7 @@ workflows:
       vars:
         APP_ID: "com.example.todoeyFlutter" # Change to your real bundle ID
     certificates:
-      - certificate_url: ENCRYPTED_P12_URL
-        certificate_password: ENCRYPTED_PASSWORD
-        provisioning_profile_url: ENCRYPTED_MOBILEPROVISION_URL
+     
 
     scripts:
       - name: Install Flutter dependencies
